@@ -6,7 +6,7 @@ COPY apps/go-html-to-md-service/go.mod ./
 RUN go mod download
 
 COPY apps/go-html-to-md-service ./
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/headlessx-html-to-md-service .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /out/headlessx-html-to-md-service .
 
 FROM alpine:3.22
 
