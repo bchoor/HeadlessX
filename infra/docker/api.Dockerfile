@@ -46,6 +46,10 @@ COPY infra/docker/worker-entrypoint.sh /usr/local/bin/headlessx-worker-entrypoin
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 RUN pnpm rebuild better-sqlite3
+# pnpm rebuild leaves no native binding here, which silently disables WebGL in headfox-js; fetch the prebuilt one
+RUN for d in /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3; do \
+      (cd "$d" && { [ -f build/Release/better_sqlite3.node ] || npx --no-install prebuild-install || npm run build-release; }) || exit 1; \
+    done
 
 # Generate Prisma Client and fetch the managed browser bundle
 WORKDIR /app/apps/api

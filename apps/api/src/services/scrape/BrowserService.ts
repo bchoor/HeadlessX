@@ -268,7 +268,8 @@ class BrowserService {
             return options.launchMode;
         }
 
-        return browserHeadless ? 'headless' : 'interactive';
+        // Plain headless Firefox has no WebGL context; the virtual display (Xvfb) keeps it available.
+        return browserHeadless ? 'virtual' : 'interactive';
     }
 
     private resolveHeadlessOption(mode: BrowserLaunchMode): boolean | 'virtual' {
